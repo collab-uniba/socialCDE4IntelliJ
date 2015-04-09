@@ -4,20 +4,21 @@
 
 package com.socialcdeIntellij.dynamicview;
 
+import com.socialcdeIntellij.action.ActionGeneral;
+import com.socialcdeIntellij.controller.Controller;
+import com.socialcdeIntellij.object.ButtonService;
+import com.socialcdeIntellij.object.ImagesMod;
+import com.socialcdeIntellij.shared.library.WService;
+import org.jdesktop.swingx.HorizontalLayout;
+import org.jdesktop.swingx.VerticalLayout;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import javax.swing.*;
-import javax.swing.border.*;
-import com.socialcdeIntellij.action.ActionGeneral;
-import com.socialcdeIntellij.controller.Controller;
-import com.socialcdeIntellij.object.ButtonService;
-import com.socialcdeIntellij.object.ImagesMod;
-import com.socialcdeIntellij.shared.library.WService;
-import org.jdesktop.swingx.*;
 
 
 public class HomePanel extends JPanel {
@@ -76,18 +77,21 @@ public class HomePanel extends JPanel {
         panelService = new JPanel();
         panelserviceDemo = new JPanel();
 
+        Controller.setCounter(0);
         //======== this ========
         setBackground(Color.white);
-        setPreferredSize(new Dimension(448, 610));
+        //setPreferredSize(new Dimension(448, 610));
         setName("Home");
+
 
         setLayout(new VerticalLayout(10));
 
         //======== panelInfoUser ========
         {
             panelInfoUser.setBackground(Color.white);
-            panelInfoUser.setPreferredSize(new Dimension(446, 115));
-            panelInfoUser.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
+            //panelInfoUser.setPreferredSize(new Dimension(446, 115));
+            //panelInfoUser.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 5));
+            panelInfoUser.setLayout(new HorizontalLayout(5));
 
             //---- lblAvatar ----
 
@@ -107,23 +111,25 @@ public class HomePanel extends JPanel {
                 e.printStackTrace();
             }
 
-
+            lblAvatar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             lblAvatar.setName("lblAvatar");
             panelInfoUser.add(lblAvatar);
 
             //======== panelInfo ========
             {
                 panelInfo.setBackground(Color.white);
-                panelInfo.setLayout(new GridLayout(2, 0, 0, 10));
+               // panelInfo.setLayout(new GridLayout(2, 0, 0, 10));
+                panelInfo.setLayout(new VerticalLayout(5));
 
                 //======== panelSettings ========
                 {
                     panelSettings.setBackground(Color.white);
-                    panelSettings.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+                    //panelSettings.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
+                    panelSettings.setLayout(new GridLayout(1, 2, 50, 0));
 
                     //---- lblNickname ----
                     lblNickname.setText(Controller.getCurrentUser().Username);
-                    lblNickname.setHorizontalAlignment(SwingConstants.LEFT);
+                    lblNickname.setHorizontalAlignment(SwingConstants.CENTER);
                     lblNickname.setName("lblNickname");
                     panelSettings.add(lblNickname);
 
@@ -153,13 +159,22 @@ public class HomePanel extends JPanel {
                 //======== panelInfo2 ========
                 {
                     panelInfo2.setBackground(Color.white);
-                    panelInfo2.setLayout(new GridLayout(1, 3, 10, 0));
+                    panelInfo2.setLayout(new FlowLayout(FlowLayout.CENTER, 5,0));
+
+                    JSeparator sep1 = new JSeparator();
+                    sep1.setOrientation(SwingConstants.VERTICAL);
+                    sep1.setPreferredSize(new Dimension(3,30));
+                    sep1.setVisible(true);
+
+                    JSeparator sep2 = new JSeparator();
+                    sep2.setPreferredSize(new Dimension(3,30));
+                    sep2.setVisible(true);
+                    sep2.setOrientation(SwingConstants.VERTICAL);
 
                     //======== panelPost ========
                     {
                         panelPost.setBackground(Color.white);
-                        panelPost.setBorder(new MatteBorder(0, 0, 0, 1, Color.black));
-                        panelPost.setLayout(new GridLayout(2, 1));
+                        panelPost.setLayout(new VerticalLayout(2));
 
                         //---- lblPosts ----
                         lblPosts.setText("Posts");
@@ -174,11 +189,12 @@ public class HomePanel extends JPanel {
                         panelPost.add(lblNumPost);
                     }
                     panelInfo2.add(panelPost);
+                    panelInfo2.add(sep1);
 
                     //======== panelfollowing ========
                     {
                         panelfollowing.setBackground(Color.white);
-                        panelfollowing.setLayout(new GridLayout(2, 1));
+                        panelfollowing.setLayout(new VerticalLayout(2));
 
                         //---- lblFollowing ----
                         lblFollowing.setText("Following");
@@ -193,18 +209,16 @@ public class HomePanel extends JPanel {
                         panelfollowing.add(lblNumFollowing);
                     }
                     panelInfo2.add(panelfollowing);
+                    panelInfo2.add(sep2);
 
                     //======== panelFollowers ========
                     {
                         panelFollowers.setBackground(Color.white);
-                        panelFollowers.setBorder(new MatteBorder(0, 1, 0, 0, Color.black));
-                        panelFollowers.setPreferredSize(new Dimension(86, 32));
-                        panelFollowers.setLayout(new GridLayout(2, 1));
+                        panelFollowers.setLayout(new VerticalLayout(2));
 
                         //---- lblFollowers ----
                         lblFollowers.setText("Followers");
                         lblFollowers.setHorizontalAlignment(SwingConstants.CENTER);
-                        lblFollowers.setAlignmentX(0.5F);
                         lblFollowers.setHorizontalTextPosition(SwingConstants.CENTER);
                         panelFollowers.add(lblFollowers);
 
@@ -229,7 +243,7 @@ public class HomePanel extends JPanel {
                     (ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             scrollPane1.setHorizontalScrollBarPolicy
                     (ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-            scrollPane1.setPreferredSize(new Dimension(200, 400));
+            scrollPane1.setPreferredSize(new Dimension(200, 460));
 
             //======== panelService ========
             {
@@ -253,7 +267,6 @@ public class HomePanel extends JPanel {
 
                                 services.getButton().setService(wService[j]);
                                 services.getButton().addActionListener(listener);
-
 
                                 if(Controller.getServicesImage().get(wService[j].Name) == null)
                                 {

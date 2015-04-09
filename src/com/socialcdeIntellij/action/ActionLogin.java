@@ -230,14 +230,14 @@ public class ActionLogin {
 
                                 Controller.setPreferences("proxyRoot", ((JTextField) uiData.get("ProxyHost")).getText());
 
-                                System.out.println(" ");
+                                /*System.out.println(" ");
                                 System.out.println("DA ActionLogin:");
                                 System.out.println("proxyhost -> " + Controller.getPreferences("proxyHost"));
                                 System.out.println("proxyRoot -> "+ Controller.getPreferences("proxyRoot"));
                                 System.out.println("username -> "+ Controller.getPreferences("username"));
                                 System.out.println("password -> "+ Controller.getPreferences("password"));
                                 System.out.println("autoLogin -> "+ Controller.getPreferences("autoLogin"));
-                                System.out.println("savePassword -> "+ Controller.getPreferences("savePassword"));
+                                System.out.println("savePassword -> "+ Controller.getPreferences("savePassword"));*/
 
 
                                 Controller.setWindowName("Profile");
@@ -269,7 +269,7 @@ public class ActionLogin {
                 Controller.setWindowName("Registration");
                 Controller.setWindow(Controller.getRegistrationPanel());
                 Controller.getWindow().revalidate();
-                clear(uiData);
+                //clear(uiData);
 
                 break;
 

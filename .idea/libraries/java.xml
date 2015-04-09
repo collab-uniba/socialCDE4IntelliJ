@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="java">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Desktop/signpost-master.zip!/signpost-master/signpost-commonshttp3/src/main/java" />
+      <root url="jar://$USER_HOME$/Desktop/signpost-master.zip!/signpost-master/signpost-commonshttp3/src/test/java" />
+      <root url="jar://$USER_HOME$/Desktop/signpost-master.zip!/signpost-master/signpost-commonshttp4/src/main/java" />
+      <root url="jar://$USER_HOME$/Desktop/signpost-master.zip!/signpost-master/signpost-commonshttp4/src/test/java" />
+      <root url="jar://$USER_HOME$/Desktop/signpost-master.zip!/signpost-master/signpost-core/src/main/java" />
+      <root url="jar://$USER_HOME$/Desktop/signpost-master.zip!/signpost-master/signpost-core/src/test/java" />
+      <root url="jar://$USER_HOME$/Desktop/signpost-master.zip!/signpost-master/signpost-jetty6/src/main/java" />
+      <root url="jar://$USER_HOME$/Desktop/signpost-master.zip!/signpost-master/signpost-jetty6/src/test/java" />
+    </SOURCES>
+  </library>
+</component>

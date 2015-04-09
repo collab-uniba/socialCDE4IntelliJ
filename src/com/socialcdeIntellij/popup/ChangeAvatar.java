@@ -52,6 +52,7 @@ public class ChangeAvatar extends JDialog {
 
 
         //======== this ========
+
         setName("ChangeAvatar");
         setTitle("Select avatar");
         Container contentPane = getContentPane();
@@ -65,8 +66,9 @@ public class ChangeAvatar extends JDialog {
 
             //======== scrollPane1 ========
             {
-                //scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+                scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
                 scrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                scrollPane1.setSize(new Dimension(200,200));
 
                 uriAvatar = Controller.getProxy().GetAvailableAvatars(
                         Controller.getCurrentUser().Username,
@@ -77,6 +79,7 @@ public class ChangeAvatar extends JDialog {
                 {
                     contentPanel.setBackground(Color.white);
                     contentPanel.setLayout(new FlowLayout());
+
 
                     if (uriAvatar.length > 0) {
                         lblNoAvatars.setVisible(false);
@@ -96,19 +99,20 @@ public class ChangeAvatar extends JDialog {
                                 flag = false;
                             }
 
+                            System.out.println("flag = "+flag);
                             if (flag) {
                                 GeneralButton btnAvatar = new GeneralButton();
 
-                                if (Controller.getCurrentUser().getAvatar() != null &&  Controller.getCurrentUser().getAvatar()
-                                        .equals(uriAvatar[i].toString())) {
+                                if (Controller.getCurrentUser().getAvatar() != null) {
                                     btnAvatar.setText("");
                                     /*avatarImage.setData("ID_action", "btnAvatar");
                                     avatarImage.setData("URI", uriAvatar[i]);*/
                                     final int j = i;
 
                                     try {
-                                        btnAvatar.setIcon(new ImageIcon(im.resize((BufferedImage) im.get_ImageStream(uriAvatar[i].toURL()), 70, 70)));
 
+                                        btnAvatar.setIcon(new ImageIcon(im.resize((BufferedImage) im.get_ImageStream(uriAvatar[i].toURL()), 70, 70)));
+                                        btnAvatar.setVisible(true);
                                     } catch (MalformedURLException e) {
                                         // TODO Auto-generated catch block
                                         e.printStackTrace();
@@ -129,9 +133,23 @@ public class ChangeAvatar extends JDialog {
                                                     uriAvatar[j])) {
                                                 JOptionPane.showMessageDialog(Controller.getFrame(), "Something was wrong, please try again.",
                                                         "SocialCDE message", JOptionPane.WARNING_MESSAGE);
+                                                dispose();
                                             }
-                                            else
-                                                avatarChoosen = String.valueOf(uriAvatar[j]);
+                                            else {
+                                                //avatarChoosen = String.valueOf(uriAvatar[j]);
+                                                Controller.getCurrentUser().setAvatar(String.valueOf(uriAvatar[j]));
+                                               /* try {
+                                                    ((JLabel) Controller.temporaryInformation.get("newAvatar"))
+                                                            .setIcon(new ImageIcon(im.resize((BufferedImage)
+                                                                    Controller.getUsersAvatar().get(Controller.getCurrentUser().Username), 75, 75)));
+                                                } catch (IOException e1) {
+                                                    e1.printStackTrace();
+                                                }
+                                                Controller.getWindow().revalidate();*/
+                                                JOptionPane.showMessageDialog(Controller.getFrame(), "Avatar set up!",
+                                                        "SocialCDE message", JOptionPane.INFORMATION_MESSAGE);
+                                                dispose();
+                                            }
 
                                         }
                                     });

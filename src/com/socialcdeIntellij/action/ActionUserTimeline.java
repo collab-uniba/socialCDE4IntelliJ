@@ -1,8 +1,9 @@
 package com.socialcdeIntellij.action;
 
 import com.socialcdeIntellij.controller.Controller;
-import com.socialcdeIntellij.object.GeneralLabel;
 import com.socialcdeIntellij.object.ImagesMod;
+import com.socialcdeIntellij.object.LabelClicked;
+import com.socialcdeIntellij.popup.HidePanel;
 import com.socialcdeIntellij.popup.PopupSkill;
 import com.socialcdeIntellij.shared.library.WPost;
 import com.socialcdeIntellij.shared.library.WUser;
@@ -10,11 +11,9 @@ import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -22,19 +21,47 @@ import java.util.HashMap;
  * Created by Teo on 20/03/2015.
  */
 public class ActionUserTimeline {
+    private static long lastId;
 
     public ActionUserTimeline(final HashMap<String, Object> uiData) {
+
         String widgetName = uiData.get("ID_action").toString();
+
         int type = (int) uiData.get("Event_type");
         final WUser user_selected = ((WUser) uiData.get("userSelected"));
         final ActionGeneral listener = new ActionGeneral();
         ImagesMod im = new ImagesMod();
 
+
         switch (widgetName) {
+
             case "lblReturn":
+
                 if(Controller.getProxy().IsWebServiceRunning()) {
-                    Controller.selectDynamicWindow(2);
-                    Controller.getWindow().revalidate();
+                    String str = (String) Controller.temporaryInformation.get("PrePanel");
+
+                    switch (str){
+                        case "HomeTimeline":
+                            Controller.selectDynamicWindow(3);
+                            Controller.getWindow().revalidate();
+                            break;
+
+                        case "InteractiveTimeline":
+                            Controller.selectDynamicWindow(5);
+                            Controller.getWindow().revalidate();
+                            break;
+
+                        case "IterationTimeline":
+                            Controller.selectDynamicWindow(4);
+                            Controller.getWindow().revalidate();
+                            break;
+
+                        case "PeoplePanel":
+                            Controller.selectDynamicWindow(2);
+                            Controller.getWindow().revalidate();
+
+                    }
+
                 }
                 else
                 {
@@ -47,9 +74,9 @@ public class ActionUserTimeline {
                     if (Controller.getProxy().Follow(
                             Controller.getCurrentUser().Username,
                             Controller.getCurrentUserPassword(), user_selected.Id)) {
-                        ((JLabel) uiData.get("lblFollow")).setVisible(false);
-                        ((JLabel) uiData.get("lblUnfollow")).setVisible(true);
-                        ((JLabel) uiData.get("lblUnfollow")).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                        ((JLabel) uiData.get("labelFollow")).setVisible(false);
+                        ((JLabel) uiData.get("labelUnfollow")).setVisible(true);
+
                     }
                     else{
                         JOptionPane.showMessageDialog(Controller.getFrame(), "Something was wrong, please try again.",
@@ -64,12 +91,13 @@ public class ActionUserTimeline {
 
             case "lblUnfollow":
                 if(Controller.getProxy().IsWebServiceRunning()) {
-                    if (Controller.getProxy().Follow(
+
+                    if (Controller.getProxy().UnFollow(
                             Controller.getCurrentUser().Username,
                             Controller.getCurrentUserPassword(), user_selected.Id)) {
-                        ((JLabel) uiData.get("lblUnfollow")).setVisible(false);
-                        ((JLabel) uiData.get("lblFollow")).setVisible(true);
-                        ((JLabel) uiData.get("lblFollow")).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+                        ((JLabel) uiData.get("labelUnfollow")).setVisible(false);
+                        ((JLabel) uiData.get("labelFollow")).setVisible(true);
                     }
                     else{
                         JOptionPane.showMessageDialog(Controller.getFrame(), "Something was wrong, please try again.",
@@ -84,8 +112,9 @@ public class ActionUserTimeline {
 
             case "lblSkill":
                 if(Controller.getProxy().IsWebServiceRunning()) {
-                    final PopupSkill skillPanel = new PopupSkill(Controller.getFrame());
+                    PopupSkill skillPanel = new PopupSkill(Controller.getFrame());
                     skillPanel.setUser(user_selected);
+                    skillPanel.setVisible(true);
                 }
                 else
                 {
@@ -94,11 +123,18 @@ public class ActionUserTimeline {
                 break;
 
             case "lblHide":
-                //*********************************************************************
+                if(Controller.getProxy().IsWebServiceRunning()) {
+                    Controller.temporaryInformation.put("CurrentUserView", user_selected);
+                    HidePanel hd = new HidePanel(Controller.getFrame());
+                    hd.setVisible(true);
+                }
+                else
+                {
+                    Controller.openConnectionLostPanel();
+                }
                 break;
 
             case "otherPostAvailable":
-
                 if(Controller.getProxy().IsWebServiceRunning()) {
 
                     final WPost[] posts = Controller.getProxy().GetUserTimeline(
@@ -110,76 +146,71 @@ public class ActionUserTimeline {
                     for (int i = 0; i < posts.length; i++) {
                         final int j = i;
 
-                        JPanel pnl = new JPanel(new HorizontalLayout(10));
-                        pnl.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
+
+                        JPanel pnl = new JPanel(new HorizontalLayout(3));
+                       // pnl.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
                         pnl.setBackground(Color.WHITE);
-                        JPanel pnl2 = new JPanel(new VerticalLayout(10));
+                        JPanel pnl2 = new JPanel(new VerticalLayout(2));
                         pnl2.setBackground(Color.WHITE);
 
                         //userPostComposite.setData("IdPost", posts[j].Id);
-                        GeneralLabel lblImgAvatar = new GeneralLabel();
-                        lblImgAvatar.setName("lblImgAvatar");
-
+                        LabelClicked lblImgAvatar = new LabelClicked();
+                        //lblImgAvatar.setName("lblUser");
 
                         if (Controller.getUsersAvatar().get(posts[j].getUser().Username) == null) {
                             Controller.getUsersAvatar().put(posts[j].getUser().Username, im.getUserImage(posts[j].getUser().Avatar));
                         }
-                        lblImgAvatar.setIcon(new ImageIcon(Controller.getUsersAvatar().get(posts[j].getUser().Username)));
+                        //lblImgAvatar.setIcon(new ImageIcon(Controller.getUsersAvatar().get(posts[j].getUser().Username)));
+                        try {
+                            lblImgAvatar.getLabel().setIcon(new ImageIcon(im.resize((BufferedImage) Controller.getUsersAvatar().get(posts[j].getUser().Username), 50, 50)));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                         if (!posts[j].getUser().Username.equals(Controller
                                 .getCurrentUser().Username)) {
-                            lblImgAvatar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                            //lblImgAvatar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             lblImgAvatar.setToolTipText("View "
                                     + posts[j].getUser().Username + " Timeline");
+                            // Controller.temporaryInformation.put("User_selected", posts[j].getUser());
 
-                            lblImgAvatar.setwUser(posts[j].getUser());
+                            lblImgAvatar.getLabel().setwUser(posts[j].getUser());
+                            //lblImgAvatar.setUserType("");
                             lblImgAvatar.addMouseListener(listener);
 
                         }
                         pnl.add(lblImgAvatar);
 
-                        GeneralLabel lblUsername = new GeneralLabel();
-                        lblUsername.setName("lblUsername");
+                        LabelClicked lblUsername = new LabelClicked();
+                        //lblUsername.setName("lblUsername");
 
-                        lblUsername.setText(posts[j].getUser().Username);
+                        lblUsername.getLabel().setText(posts[j].getUser().Username);
                         if (!posts[j].getUser().Username.equals(Controller
                                 .getCurrentUser().Username)) {
                             lblUsername.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             lblUsername.setToolTipText("View " + posts[j].getUser().Username + " Timeline");
-                            lblUsername.setFont(new Font("Calibri", Font.BOLD, 15));
+                            lblUsername.getLabel().setFont(new Font("Calibri", Font.BOLD, 15));
+                            lblUsername.getLabel().setForeground(Color.BLUE);
+                            //Controller.temporaryInformation.put("User_selected", posts[j].getUser());
 
-                            lblUsername.setwUser(posts[j].getUser());
+                            lblUsername.getLabel().setwUser(posts[j].getUser());
                             lblUsername.addMouseListener(listener);
                         } else {
-                            lblUsername.setFont(new Font("Calibri", Font.BOLD, 15));
-                            lblUsername.setForeground(Color.BLUE);
+                            lblUsername.getLabel().setFont(new Font("Calibri", Font.BOLD, 15));
+                            lblUsername.getLabel().setForeground(Color.BLACK);
                         }
 
                         pnl2.add(lblUsername);
 
-                        JTextPane message = new JTextPane();
-                        message.setContentType("text/html");
+
+                        JTextArea message = new JTextArea();
+                        message.setPreferredSize(new Dimension(160,60));
+                        message.setFont(new Font("Calibri", Font.ITALIC, 11));
+                        message.setLineWrap(true);
+                        message.setWrapStyleWord(true);
                         message.setEditable(false);
                         message.setBackground(Color.WHITE);
-                        message.setText(findLink(posts[j].getMessage()));
-                        message.addHyperlinkListener(new HyperlinkListener() {
-                            @Override
-                            public void hyperlinkUpdate(HyperlinkEvent e) {
-                                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                                    if (Desktop.isDesktopSupported()) {
-                                        try {
-                                            Desktop.getDesktop().browse(e.getURL().toURI());
-                                        } catch (IOException e1) {
-                                            // TODO Auto-generated catch block
-                                            e1.printStackTrace();
-                                        } catch (URISyntaxException e1) {
-                                            // TODO Auto-generated catch block
-                                            e1.printStackTrace();
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                        message.setText(posts[j].getMessage());
                         pnl2.add(message);
 
 
@@ -245,41 +276,50 @@ public class ActionUserTimeline {
                         messageDate.setForeground(Color.LIGHT_GRAY);
                         pnl2.add(messageDate);
                         pnl.add(pnl2);
+                        // panel.add(pnl);
 
-                        ((JPanel) uiData.get("panelDynamic")).remove(((JLabel) uiData.get("LabelOtherPost")));
+
+
+
+                        ((JPanel) uiData.get("panelDynamic")).remove(((JPanel) uiData.get("PanelOtherPost")));
 
                         ((JPanel) uiData.get("panelDynamic")).add(pnl);
 
                         ((JPanel) uiData.get("panelDynamic")).revalidate();
 
-                           /* SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ((JScrollPane)uiData.get("scroll")).getVerticalScrollBar().setValue(0);
-                                }
-                            });*/
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((JScrollPane)uiData.get("scroll")).getVerticalScrollBar().setValue(0);
+                            }
+                        });
 
                         setLastId(posts[i].Id);
                     }
 
 
-                    WPost[] newPosts = Controller.getProxy().GetHomeTimeline(
+                    WPost[] newPosts = Controller.getProxy().GetUserTimeline(
                             Controller.getCurrentUser().Username,
-                            Controller.getCurrentUserPassword(), 0, getLastId());
+                            Controller.getCurrentUserPassword(),
+                            ((WUser) uiData.get("userSelected")).Username, 0,
+                            getLastId());
 
                     if (newPosts == null || newPosts.length == 2) {
                         newPosts = new WPost[0];
                     }
 
                     if (newPosts.length > 0) {
-                        JPanel jp = new JPanel(new FlowLayout());
-                        jp.add(((JLabel) uiData.get("LabelOtherPost")));
-                        ((JPanel) uiData.get("panelDynamic")).add(jp);
+
+                        ((JPanel) uiData.get("panelDynamic")).add(((JPanel) uiData.get("PanelOtherPost")));
+                        ((JPanel) uiData.get("PanelOtherPost")).setVisible(true);
+                        ((JPanel)uiData.get("PanelNoPost")).setVisible(false);
+
 
                     } else {
-                        JPanel jp = new JPanel(new FlowLayout());
-                        jp.add(((JLabel) uiData.get("LabelNoPost")));
-                        ((JPanel) uiData.get("panelDynamic")).add(jp);
+
+                        ((JPanel) uiData.get("panelDynamic")).add( ((JPanel)uiData.get("PanelNoPost")));
+                        ((JPanel)uiData.get("PanelOtherPost")).setVisible(false);
+                        ((JPanel)uiData.get("PanelNoPost")).setVisible(true);
 
                     }
                 }
@@ -289,6 +329,7 @@ public class ActionUserTimeline {
                 }
                 break;
 
+
             default:
                 break;
 
@@ -296,7 +337,7 @@ public class ActionUserTimeline {
         }
     }
 
-    private static long lastId;
+
 
     public static long getLastId() {
         return lastId;

@@ -31,9 +31,8 @@ public class ActionSetting {
                             Controller.setPreferences("autoLogin", "True");
                         else
                             Controller.setPreferences("autoLogin", "False");
-
-                        JOptionPane.showMessageDialog(Controller.getFrame(), "Autologin changed!",
-                                "SocialCDE message", JOptionPane.INFORMATION_MESSAGE);
+                        Controller.selectDynamicWindow(0);
+                        Controller.getWindow().revalidate();
                     }
                     else {
                         if (!Controller.getCurrentUserPassword().equals(

@@ -4,14 +4,13 @@
 
 package com.socialcdeIntellij.staticview;
 
-import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import javax.swing.*;
 import com.socialcdeIntellij.action.ActionGeneral;
 import com.socialcdeIntellij.controller.Controller;
-import org.jdesktop.swingx.*;
+import org.jdesktop.swingx.VerticalLayout;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
 
 /**
  * @author Davide Rossi
@@ -102,12 +101,11 @@ public class LoginPanel extends JPanel {
 
                 //---- txtProxy ----
                 txtProxy.setText("");
-                txtProxy.setMinimumSize(new Dimension(100, 24));
-                txtProxy.setPreferredSize(new Dimension(250, 24));
+                txtProxy.setMinimumSize(new Dimension(130, 22));
+                txtProxy.setPreferredSize(new Dimension(130, 22));
                 txtProxy.setAutoscrolls(false);
                 txtProxy.setMargin(new Insets(20, 20, 20, 20));
                 txtProxy.setAlignmentX(28.5F);
-                txtProxy.setMaximumSize(new Dimension(300, 24));
                 txtProxy.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
                 txtProxy.setHorizontalAlignment(SwingConstants.LEFT);
                 txtProxy.setName("txtProxy");
@@ -120,12 +118,11 @@ public class LoginPanel extends JPanel {
 
                 //---- txtUsername ----
                 txtUsername.setText("");
-                txtUsername.setMinimumSize(new Dimension(76, 24));
-                txtUsername.setPreferredSize(new Dimension(250, 24));
+                txtUsername.setMinimumSize(new Dimension(130, 22));
+                txtUsername.setPreferredSize(new Dimension(130, 22));
                 txtUsername.setAutoscrolls(false);
                 txtUsername.setMargin(new Insets(20, 10, 20, 59));
                 txtUsername.setAlignmentX(28.5F);
-                txtUsername.setMaximumSize(new Dimension(1000, 24));
                 txtUsername.setName("txtUsername");
                 if(!Controller.getPreferences("username").isEmpty()
                         && (Controller.getPreferences("autoLogin").equals("True")
@@ -137,6 +134,8 @@ public class LoginPanel extends JPanel {
                 //---- txtPassword ----
                 txtPassword.setText("");
                 txtPassword.setName("txtPassword");
+                txtPassword.setMinimumSize(new Dimension(130, 22));
+                txtPassword.setPreferredSize(new Dimension(130, 22));
                 if(!Controller.getPreferences("password").isEmpty()
                         && (Controller.getPreferences("autoLogin").equals("True")
                         || Controller.getPreferences("savePassword").equals("True"))){
@@ -153,21 +152,21 @@ public class LoginPanel extends JPanel {
                 //---- signProxy ----
                 signProxy.setIcon(null);
                 signProxy.setHorizontalAlignment(SwingConstants.LEFT);
-                signProxy.setPreferredSize(new Dimension(32, 24));
+                signProxy.setPreferredSize(new Dimension(28, 22));
                 signProxy.setFocusable(false);
                 panelSign.add(signProxy);
 
                 //---- signUsername ----
                 signUsername.setIcon(null);
                 signUsername.setHorizontalAlignment(SwingConstants.LEFT);
-                signUsername.setPreferredSize(new Dimension(32, 24));
+                signUsername.setPreferredSize(new Dimension(28, 22));
                 signUsername.setFocusable(false);
                 panelSign.add(signUsername);
 
                 //---- signPassword ----
                 signPassword.setIcon(null);
                 signPassword.setHorizontalAlignment(SwingConstants.LEFT);
-                signPassword.setPreferredSize(new Dimension(32, 24));
+                signPassword.setPreferredSize(new Dimension(28, 22));
                 signPassword.setFocusable(false);
                 panelSign.add(signPassword);
             }

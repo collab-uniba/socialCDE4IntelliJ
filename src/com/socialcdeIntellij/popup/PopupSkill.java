@@ -67,7 +67,7 @@ public class PopupSkill extends JDialog {
 
             //======== scrollPane2 ========
             {
-                scrollPane2.setPreferredSize(new Dimension(506, 136));
+                scrollPane2.setPreferredSize(new Dimension(300, 136));
 
                 //======== contentPanel ========
                 {
@@ -105,7 +105,7 @@ public class PopupSkill extends JDialog {
                         noSkill.setVisible(false);
                         contentPanel.add(lblSkill);
                     } else {
-                        noSkill.setText("There are no skills or there are no \"Get your skills\" \n feature selected.\n Try again later.");
+                        noSkill.setText("<html>There are no skills or there are no \"Get your skills\" <br> feature selected.<br> Try again later.</html>");
                         lblSkill.setVisible(false);
                         noSkill.setVisible(true);
                         contentPanel.add(noSkill);

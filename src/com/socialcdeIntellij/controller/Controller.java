@@ -1,6 +1,7 @@
 package com.socialcdeIntellij.controller;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindow;
 import com.socialcdeIntellij.dynamicview.*;
 import com.socialcdeIntellij.model.ProxyWrapper;
 import com.socialcdeIntellij.object.OperationProgressBar;
@@ -14,10 +15,12 @@ import java.util.prefs.Preferences;
 
 
 public class Controller {
-
+    private static Point point = null;
     private static JFrame frame = null;
     private static Project project = null;
     private static Preferences prefs = Preferences.userNodeForPackage(Controller.class);
+    private static ToolWindow toolWindow;
+    private static int counter = 0;
 
     private static RegistrationPanel registrationPanel = new RegistrationPanel();
     private static LoginPanel loginPanel = new LoginPanel();
@@ -47,6 +50,14 @@ public class Controller {
     private static HashMap<String, Image> servicesImage = new HashMap<String,Image>();
 
 
+    public static Point getPoint() {
+        return point;
+    }
+
+    public static void setPoint(Point point) {
+        Controller.point = point;
+    }
+
     public static Project getProject() {
         return project;
     }
@@ -67,15 +78,27 @@ public class Controller {
     }
  //***************************************************************************************
 
+    public static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        Controller.counter = counter;
+    }
+
+    public static ToolWindow getToolWindow() {
+        return toolWindow;
+    }
+
+    public static void setToolWindow(ToolWindow toolWindow) {
+        Controller.toolWindow = toolWindow;
+    }
+
 //metodi cambio pannelli*************************************************************************************
     public static JPanel getCurrentPanel() {
         if (flag == false) {
             setWindowName("Login");
             setWindow(getLoginPanel());
-            //return getWindow();
-
-            //setWindowName("Profile");
-           // selectDynamicWindow(0);
 
             return getWindow();
         }
@@ -208,9 +231,6 @@ public class Controller {
 
 
 
-
-    //*******************************************************************************************
-
     public static HashMap<String, Image> getUsersAvatar() {
         return usersAvatar;
     }
@@ -249,14 +269,13 @@ public class Controller {
         value = prefs.get(node, prefix);
 
         return value;
-    }//prende le preferenze memorizzate - cambiato
+    }
 
     public static void setPreferences(String node, String value) {
 
         prefs.put(node, value);
 
-    }//memorizza le preferenze - cambiato
-
+    }
 
     public static boolean isRegistered() {
 
@@ -310,10 +329,7 @@ public class Controller {
     public static void selectDynamicWindow(int choose) {
         JPanel container = new JPanel();
         container.setLayout(new VerticalLayout(2));
-
-       /* Controller.temporaryInformation.put("ProgressBarThread", getOpBar());
-        Controller.getOpBar().setLabelBar("Operation in progress..");
-        Controller.getOpBar().start();*/
+        container.setPreferredSize(new Dimension(270,550));
 
         switch (choose) {
             case 0://home profile
@@ -423,7 +439,5 @@ public class Controller {
         }
 
     }
-
-
 
 }

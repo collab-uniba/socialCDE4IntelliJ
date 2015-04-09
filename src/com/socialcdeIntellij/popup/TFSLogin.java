@@ -4,13 +4,13 @@
 
 package com.socialcdeIntellij.popup;
 
+import com.socialcdeIntellij.shared.library.WService;
+import org.jdesktop.swingx.VerticalLayout;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.HashMap;
-import javax.swing.*;
-import javax.swing.border.*;
-
-import com.socialcdeIntellij.shared.library.WService;
-import org.jdesktop.swingx.*;
 
 /**
  * @author Davide Rossi
@@ -46,7 +46,7 @@ public class TFSLogin extends JDialog {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Pablo Rossi
+        // Generated using JFormDesigner Evaluation license - David Rossi
         dialogPane = new JPanel();
         contentPanel = new JPanel();
         panel1 = new JPanel();
@@ -71,6 +71,13 @@ public class TFSLogin extends JDialog {
         //======== dialogPane ========
         {
             dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
+
+            // JFormDesigner evaluation mark
+            dialogPane.setBorder(new javax.swing.border.CompoundBorder(
+                new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0),
+                    "JFormDesigner Evaluation", javax.swing.border.TitledBorder.CENTER,
+                    javax.swing.border.TitledBorder.BOTTOM, new java.awt.Font("Dialog", java.awt.Font.BOLD, 12),
+                    java.awt.Color.red), dialogPane.getBorder())); dialogPane.addPropertyChangeListener(new java.beans.PropertyChangeListener(){public void propertyChange(java.beans.PropertyChangeEvent e){if("border".equals(e.getPropertyName()))throw new RuntimeException();}});
 
             dialogPane.setLayout(new BorderLayout());
 
@@ -180,7 +187,7 @@ public class TFSLogin extends JDialog {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Pablo Rossi
+    // Generated using JFormDesigner Evaluation license - David Rossi
     private JPanel dialogPane;
     private JPanel contentPanel;
     private JPanel panel1;

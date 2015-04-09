@@ -4,13 +4,12 @@
 
 package com.socialcdeIntellij.staticview;
 
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-import javax.swing.*;
-
 import com.socialcdeIntellij.action.ActionGeneral;
-import org.jdesktop.swingx.*;
+import org.jdesktop.swingx.VerticalLayout;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
 
 /**
  * @author Davide Rossi
@@ -121,55 +120,55 @@ public class RegistrationPanel extends JPanel {
                 panelTxt.setLayout(new VerticalLayout(4));
 
                 //---- txtProxy ----
-                txtProxy.setMinimumSize(new Dimension(100, 24));
-                txtProxy.setPreferredSize(new Dimension(250, 24));
+                txtProxy.setMinimumSize(new Dimension(130, 22));
+                txtProxy.setPreferredSize(new Dimension(130, 22));
                 txtProxy.setAutoscrolls(false);
                 txtProxy.setMargin(new Insets(20, 20, 20, 20));
                 txtProxy.setAlignmentX(28.5F);
-                txtProxy.setMaximumSize(new Dimension(300, 24));
                 txtProxy.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
                 txtProxy.setHorizontalAlignment(SwingConstants.LEFT);
                 txtProxy.setName("txtProxy");
                 panelTxt.add(txtProxy);
 
                 //---- txtEmail ----
-                txtEmail.setMinimumSize(new Dimension(76, 24));
-                txtEmail.setPreferredSize(new Dimension(250, 24));
+                txtEmail.setMinimumSize(new Dimension(130, 22));
+                txtEmail.setPreferredSize(new Dimension(130, 22));
                 txtEmail.setAutoscrolls(false);
                 txtEmail.setMargin(new Insets(20, 10, 20, 59));
                 txtEmail.setAlignmentX(28.5F);
-                txtEmail.setMaximumSize(new Dimension(1000, 24));
                 txtEmail.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
                 txtEmail.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
                 txtEmail.setName("txtEmail");
                 panelTxt.add(txtEmail);
 
                 //---- txtCode ----
-                txtCode.setMinimumSize(new Dimension(76, 24));
-                txtCode.setPreferredSize(new Dimension(250, 24));
+                txtCode.setMinimumSize(new Dimension(130, 22));
+                txtCode.setPreferredSize(new Dimension(130, 22));
                 txtCode.setAutoscrolls(false);
                 txtCode.setMargin(new Insets(20, 10, 20, 59));
                 txtCode.setAlignmentX(28.5F);
-                txtCode.setMaximumSize(new Dimension(1000, 24));
                 txtCode.setName("txtCode");
                 panelTxt.add(txtCode);
 
                 //---- txtUsername ----
-                txtUsername.setMinimumSize(new Dimension(76, 24));
-                txtUsername.setPreferredSize(new Dimension(250, 24));
+                txtUsername.setMinimumSize(new Dimension(130, 22));
+                txtUsername.setPreferredSize(new Dimension(130, 22));
                 txtUsername.setAutoscrolls(false);
                 txtUsername.setMargin(new Insets(20, 10, 20, 59));
                 txtUsername.setAlignmentX(28.5F);
-                txtUsername.setMaximumSize(new Dimension(1000, 24));
                 txtUsername.setName("txtUsername");
                 panelTxt.add(txtUsername);
 
                 //---- txtPassword ----
                 txtPassword.setName("txtPassword");
+                txtPassword.setMinimumSize(new Dimension(130, 22));
+                txtPassword.setPreferredSize(new Dimension(130, 22));
                 panelTxt.add(txtPassword);
 
                 //---- txtConfirmPassword ----
                 txtConfirmPassword.setName("txtConfirmPassword");
+                txtConfirmPassword.setMinimumSize(new Dimension(130, 22));
+                txtConfirmPassword.setPreferredSize(new Dimension(130, 22));
                 panelTxt.add(txtConfirmPassword);
             }
             panelDati.add(panelTxt);
@@ -181,42 +180,42 @@ public class RegistrationPanel extends JPanel {
                 //---- signProxy ----
                 signProxy.setIcon(null);
                 signProxy.setHorizontalAlignment(SwingConstants.LEFT);
-                signProxy.setPreferredSize(new Dimension(32, 24));
+                signProxy.setPreferredSize(new Dimension(28, 22));
                 signProxy.setFocusable(false);
                 panel3.add(signProxy);
 
                 //---- signEmail ----
                 signEmail.setIcon(null);
                 signEmail.setHorizontalAlignment(SwingConstants.LEFT);
-                signEmail.setPreferredSize(new Dimension(32, 24));
+                signEmail.setPreferredSize(new Dimension(28, 22));
                 signEmail.setFocusable(false);
                 panel3.add(signEmail);
 
                 //---- signCode ----
                 signCode.setIcon(null);
                 signCode.setHorizontalAlignment(SwingConstants.LEFT);
-                signCode.setPreferredSize(new Dimension(32, 24));
+                signCode.setPreferredSize(new Dimension(28, 22));
                 signCode.setFocusable(false);
                 panel3.add(signCode);
 
                 //---- signUsername ----
                 signUsername.setIcon(null);
                 signUsername.setHorizontalAlignment(SwingConstants.LEFT);
-                signUsername.setPreferredSize(new Dimension(32, 24));
+                signUsername.setPreferredSize(new Dimension(28, 22));
                 signUsername.setFocusable(false);
                 panel3.add(signUsername);
 
                 //---- signPassword ----
                 signPassword.setIcon(null);
                 signPassword.setHorizontalAlignment(SwingConstants.LEFT);
-                signPassword.setPreferredSize(new Dimension(32, 24));
+                signPassword.setPreferredSize(new Dimension(28, 22));
                 signPassword.setFocusable(false);
                 panel3.add(signPassword);
 
                 //---- signConfirmPassword ----
                 signConfirmPassword.setIcon(null);
                 signConfirmPassword.setHorizontalAlignment(SwingConstants.LEFT);
-                signConfirmPassword.setPreferredSize(new Dimension(32, 24));
+                signConfirmPassword.setPreferredSize(new Dimension(28, 22));
                 signConfirmPassword.setFocusable(false);
                 panel3.add(signConfirmPassword);
             }

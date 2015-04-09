@@ -21,14 +21,26 @@ public class PinWindow extends JDialog {
     private WService service;
     private WOAuthData oauthData;
 
-    public PinWindow(Frame owner) {
+
+
+    public PinWindow(Frame owner, WService service) {
         super(owner);
         initComponents();
+        this.service = service;
     }
 
-    public PinWindow(Dialog owner) {
+    public PinWindow(Dialog owner, WService service) {
         super(owner);
         initComponents();
+        this.service = service;
+    }
+
+    public JLabel getLblPin() {
+        return lblPin;
+    }
+
+    public void setLblPin(JLabel lblPin) {
+        this.lblPin = lblPin;
     }
 
     public WService getService() {
@@ -81,21 +93,22 @@ public class PinWindow extends JDialog {
         Container contentPane = getContentPane();
         contentPane.setLayout(new VerticalLayout(10));
 
-        //---- lblPin ----
-        lblPin.setText("Inserisci il PIN:");
-        lblPin.setName("lblPin");
-        contentPane.add(lblPin);
+                //---- lblPin ----
+                lblPin.setText("Inserisci il PIN:");
+                lblPin.setName("lblPin");
+                contentPane.add(lblPin);
 
-        //======== panel2 ========
-        {
-            panel2.setLayout(new FlowLayout());
+                //======== panel2 ========
+                {
+                    panel2.setLayout(new FlowLayout());
 
-            //---- txtPin ----
-            txtPin.setName("txtPin");
-            txtPin.setPreferredSize(new Dimension(200, 24));
-            panel2.add(txtPin);
-        }
-        contentPane.add(panel2);
+                    //---- txtPin ----
+                    txtPin.setName("txtPin");
+                    txtPin.setPreferredSize(new Dimension(200, 24));
+                    panel2.add(txtPin);
+                }
+                contentPane.add(panel2);
+
 
         //======== panel1 ========
         {

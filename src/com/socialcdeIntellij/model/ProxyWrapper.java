@@ -437,6 +437,7 @@ public class ProxyWrapper implements ISocialProxy {
 		try {
 			URL url = new URL(host + "/GetOAuth1Data");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
 			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
@@ -468,6 +469,7 @@ public class ProxyWrapper implements ISocialProxy {
 
 				Gson gson = new Gson();
 				woutAuthData = gson.fromJson(result, WOAuthData.class);
+
 			}
 
 			conn.disconnect();
@@ -475,6 +477,8 @@ public class ProxyWrapper implements ISocialProxy {
 			woutAuthData = null;
 
 		}
+
+
 
 		return woutAuthData;
 
@@ -508,7 +512,8 @@ public class ProxyWrapper implements ISocialProxy {
 			URL url = new URL(host + "/Authorize");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("POST");
+
+            conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.setUseCaches(false);
@@ -524,6 +529,12 @@ public class ProxyWrapper implements ISocialProxy {
 					+ "\", \"accessToken\": \"" + accessToken
 					+ "\", \"accessSecret\":\"" + accessSecret + "\"}");
 
+            System.out.println("eeee: "+"{ \"username\":\"" + username + "\", \"password\":\""
+                    + password + "\" , \"service\":\"" + service
+                    + "\", \"verifier\":\"" + verifier
+                    + "\", \"accessToken\": \"" + accessToken
+                    + "\", \"accessSecret\":\"" + accessSecret + "\"}");
+
 			writer.close();
 			out.close();
 			int status = conn.getResponseCode();
@@ -538,6 +549,8 @@ public class ProxyWrapper implements ISocialProxy {
 					result += output;
 
 				}
+                System.out.println("RESULT AUTHORIZE: "+result);
+
 				br.close();
 
 			}

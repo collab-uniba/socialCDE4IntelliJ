@@ -1,18 +1,10 @@
 package com.socialcdeIntellij.action;
 
-
 import com.socialcdeIntellij.controller.Controller;
-import com.socialcdeIntellij.shared.library.WService;
-
-import javax.swing.event.EventListenerList;
-import java.awt.*;
 import java.awt.event.*;
-import java.util.EventListener;
 import java.util.HashMap;
 
-/**
- * Created by Teo on 05/03/2015.
- */
+
 public class ActionGeneral implements ActionListener, FocusListener , MouseListener{
 
     private HashMap<String, Object> uiData;
@@ -80,6 +72,7 @@ public class ActionGeneral implements ActionListener, FocusListener , MouseListe
                         uiData.put("Event", event);
                         uiData.put("Event_type", event.getID());
                         uiData.put("ID_action", event.getActionCommand());
+                        uiData.put("Object", event.getSource());
 
                         new ActionPeople(uiData);
 
@@ -96,7 +89,7 @@ public class ActionGeneral implements ActionListener, FocusListener , MouseListe
                         break;
 
                     case "UserTimeline":
-                        uiData = Controller.getHomeTimelinePanel().getData();
+                        uiData = Controller.getUserTimelinePanel().getData();
                         uiData.put("Event", event);
                         uiData.put("Event_type", event.getID());
                         uiData.put("ID_action", event.getActionCommand());
@@ -197,6 +190,7 @@ public class ActionGeneral implements ActionListener, FocusListener , MouseListe
                             uiData.put("Event", event);
                             uiData.put("Event_type", event.getID());
                             uiData.put("ID_action", event.getComponent().getName());
+                            uiData.put("Object", event.getComponent());
 
                             new ActionPeople(uiData);
 
@@ -214,7 +208,7 @@ public class ActionGeneral implements ActionListener, FocusListener , MouseListe
                             break;
 
                         case "UserTimeline":
-                            uiData = Controller.getHomeTimelinePanel().getData();
+                            uiData = Controller.getUserTimelinePanel().getData();
                             uiData.put("Event", event);
                             uiData.put("Event_type", event.getID());
                             uiData.put("ID_action", event.getComponent().getName());
@@ -315,6 +309,8 @@ public class ActionGeneral implements ActionListener, FocusListener , MouseListe
                         uiData.put("Event", event);
                         uiData.put("Event_type", event.getID());
                         uiData.put("ID_action", event.getComponent().getName());
+                        uiData.put("Object", event.getComponent());
+
 
                         new ActionPeople(uiData);
 
@@ -332,7 +328,7 @@ public class ActionGeneral implements ActionListener, FocusListener , MouseListe
                         break;
 
                     case "UserTimeline":
-                        uiData = Controller.getHomeTimelinePanel().getData();
+                        uiData = Controller.getUserTimelinePanel().getData();
                         uiData.put("Event", event);
                         uiData.put("Event_type", event.getID());
                         uiData.put("ID_action", event.getComponent().getName());

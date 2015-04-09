@@ -1,21 +1,17 @@
 package com.socialcdeIntellij.action;
 
 import com.socialcdeIntellij.controller.Controller;
-import com.socialcdeIntellij.object.CustomTextArea;
-import com.socialcdeIntellij.object.GeneralLabel;
 import com.socialcdeIntellij.object.ImagesMod;
+import com.socialcdeIntellij.object.LabelClicked;
 import com.socialcdeIntellij.shared.library.WPost;
 import com.socialcdeIntellij.shared.library.WUser;
 import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -43,12 +39,12 @@ public class ActionIterationTimeline {
                 {
                     String userMessage = null;
 
-                    if (((CustomTextArea) uiData.get("TextMessage")).getText().isEmpty()) {
+                    if (((JTextArea) uiData.get("TextMessage")).getText().isEmpty()) {
                         JOptionPane.showMessageDialog(Controller.getFrame(), "The message is empty, please try again.",
                                 "SocialCDE message", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        userMessage = ((CustomTextArea) uiData.get("TextMessage")).getText();
-                        ((CustomTextArea) uiData.get("TextMessage")).setText("");
+                        userMessage = ((JTextArea) uiData.get("TextMessage")).getText();
+                        ((JTextArea) uiData.get("TextMessage")).setText("");
                         if (!Controller.getProxy().Post(
                                 Controller.getCurrentUser().Username,
                                 Controller.getCurrentUserPassword(), userMessage)) {
@@ -60,10 +56,10 @@ public class ActionIterationTimeline {
                                     Controller.getCurrentUser().Username, Controller.getCurrentUserPassword(),
                                     Controller.getCurrentUser().Username);
 
-                            final JPanel panel = new JPanel(new HorizontalLayout(10));
-                            panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
+                            final JPanel panel = new JPanel(new HorizontalLayout(3));
+                           // panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
                             panel.setBackground(Color.WHITE);
-                            JPanel pnl2 = new JPanel(new VerticalLayout(10));
+                            JPanel pnl2 = new JPanel(new VerticalLayout(2));
                             pnl2.setBackground(Color.WHITE);
 
                             if(Controller.getUsersAvatar().get(Controller.getCurrentUser().Username) == null)
@@ -71,26 +67,28 @@ public class ActionIterationTimeline {
                                 Controller.getUsersAvatar().put(Controller.getCurrentUser().Username, im.getUserImage(Controller.getCurrentUser().Avatar));
                             }
 
-                            JLabel labelUserAvatar = new JLabel();
+                            LabelClicked labelUserAvatar = new LabelClicked();
                             try {
-                                labelUserAvatar.setIcon(new ImageIcon(im.resize((BufferedImage) Controller.getUsersAvatar().get(Controller.getCurrentUser().Username),75,75)));
+                                labelUserAvatar.getLabel().setIcon(new ImageIcon(im.resize((BufferedImage) Controller.getUsersAvatar().get(Controller.getCurrentUser().Username), 50, 50)));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                             panel.add(labelUserAvatar);
 
-                            JLabel username = new JLabel();
-                            username.setText(Controller.getCurrentUser().Username);
-                            username.setFont(new Font("Calibri", Font.BOLD, 15));
-                            username.setForeground(Color.BLUE);
+                            LabelClicked username = new LabelClicked();
+                            username.getLabel().setText(Controller.getCurrentUser().Username);
+                            username.getLabel().setFont(new Font("Calibri", Font.BOLD, 15));
+                            username.getLabel().setForeground(Color.BLACK);
                             pnl2.add(username);
 
-                            JTextPane message = new JTextPane();
-                            message.setContentType("text/html");
+                            JTextArea message = new JTextArea();
+                            message.setPreferredSize(new Dimension(160,60));
+                            message.setFont(new Font("Calibri", Font.ITALIC, 11));
+                            message.setLineWrap(true);
+                            message.setWrapStyleWord(true);
                             message.setEditable(false);
                             message.setBackground(Color.WHITE);
                             message.setText(userMessage);
-
                             pnl2.add(message);
 
                             JLabel messageDate = new JLabel();
@@ -101,12 +99,10 @@ public class ActionIterationTimeline {
 
                             panel.add(pnl2);
 
-                            //((JPanel)uiData.get("panelDynamic")).removeAll();
+
                             ((JPanel)uiData.get("PanelSubDynamic")).add(panel, 0);
                             ((JPanel)uiData.get("PanelSubDynamic")).revalidate();
-                            //Controller.getDynamicPanel();
-                            //Controller.selectDynamicWindow(4);
-                           // Controller.getWindow().revalidate();
+
 
                         }
                     }
@@ -117,19 +113,21 @@ public class ActionIterationTimeline {
                 }
                 break;
 
-            case "lblImgAvatar":
+            case "lblUser":
                 if(Controller.getProxy().IsWebServiceRunning())
                 {
-                    userSelected = (WUser) uiData.get("User_data");
+                    LabelClicked labelClicked = ((LabelClicked) uiData.get("Object"));
+                    userSelected = labelClicked.getLabel().getwUser();
 
                     userCategory = Controller.getProxy().GetSuggestedFriends(
                             Controller.getCurrentUser().Username,
                             Controller.getCurrentUserPassword());
 
                     for (int i = 0; i < userCategory.length; i++) {
-                        if (userCategory[i].equals(userSelected)) {
-                            Controller.temporaryInformation.put("User_type",
-                                    "Suggested");
+                        if (userCategory[i].Username.equals(userSelected.Username)) {
+                            /*Controller.temporaryInformation.put("User_type",
+                                    "Suggested");*/
+                            labelClicked.setUserType("Suggested");
                         }
                     }
 
@@ -140,25 +138,28 @@ public class ActionIterationTimeline {
                             Controller.getCurrentUserPassword());
 
                     for (int i = 0; i < userCategory.length; i++) {
-                        if (userCategory[i].equals(userSelected)) {
-                            Controller.temporaryInformation.put("User_type",
-                                    "Following");
+                        if (userCategory[i].Username.equals(userSelected.Username)) {
+                            /*Controller.temporaryInformation.put("User_type",
+                                    "Following");*/
+                            labelClicked.setUserType("Following");
                         }
                     }
+                    //userCategory = null;
 
-                    userCategory = null;
-
-                    userCategory = Controller.getProxy().GetFollowers(
+                    WUser[] userCategory2 = Controller.getProxy().GetFollowers(
                             Controller.getCurrentUser().Username,
                             Controller.getCurrentUserPassword());
 
-                    for (int i = 0; i < userCategory.length; i++) {
-                        if (userCategory[i].equals(userSelected)) {
-                            Controller.temporaryInformation.put("User_type",
-                                    "Followers");
+                    if(userCategory.length==0 && userCategory2.length>0) {
+
+                        for (int i = 0; i < userCategory2.length; i++) {
+                            if (userCategory2[i].Username.equals(userSelected.Username)) {
+                                /*Controller.temporaryInformation.put("User_type",
+                                        "Followers");*/
+                                labelClicked.setUserType("Followers");
+                            }
                         }
                     }
-
                     userCategory = null;
 
                     userCategory = Controller.getProxy().GetHiddenUsers(
@@ -166,15 +167,18 @@ public class ActionIterationTimeline {
                             Controller.getCurrentUserPassword());
 
                     for (int i = 0; i < userCategory.length; i++) {
-                        if (userCategory[i].equals(userSelected)) {
-                            Controller.temporaryInformation.put("User_type", "Hidden");
+                        if (userCategory[i].Username.equals(userSelected.Username)) {
+                            //Controller.temporaryInformation.put("User_type", "Hidden");
+                            labelClicked.setUserType("Hidden");
                         }
                     }
 
                     userCategory = null;
 
                     Controller.temporaryInformation.put("User_selected", userSelected);
-                    Controller.selectDynamicWindow(3);
+                    Controller.temporaryInformation.put("UserType", labelClicked.getUserType());
+                    Controller.temporaryInformation.put("PrePanel", "IterationTimeline");
+                    Controller.selectDynamicWindow(6);
                     Controller.getWindow().revalidate();
                 }
                 else
@@ -183,72 +187,7 @@ public class ActionIterationTimeline {
                 }
                 break;
 
-            case "lblUsername":
-                if(Controller.getProxy().IsWebServiceRunning())
-                {
-                    userSelected = (WUser) uiData.get("User_data");
-
-                    userCategory = Controller.getProxy().GetSuggestedFriends(
-                            Controller.getCurrentUser().Username,
-                            Controller.getCurrentUserPassword());
-
-                    for (int i = 0; i < userCategory.length; i++) {
-                        if (userCategory[i].equals(userSelected)) {
-                            Controller.temporaryInformation.put("User_type",
-                                    "Suggested");
-                        }
-                    }
-
-                    userCategory = null;
-
-                    userCategory = Controller.getProxy().GetFollowings(
-                            Controller.getCurrentUser().Username,
-                            Controller.getCurrentUserPassword());
-
-                    for (int i = 0; i < userCategory.length; i++) {
-                        if (userCategory[i].equals(userSelected)) {
-                            Controller.temporaryInformation.put("User_type",
-                                    "Following");
-                        }
-                    }
-
-                    userCategory = null;
-
-                    userCategory = Controller.getProxy().GetFollowers(
-                            Controller.getCurrentUser().Username,
-                            Controller.getCurrentUserPassword());
-
-                    for (int i = 0; i < userCategory.length; i++) {
-                        if (userCategory[i].equals(userSelected)) {
-                            Controller.temporaryInformation.put("User_type",
-                                    "Followers");
-                        }
-                    }
-
-                    userCategory = null;
-
-                    userCategory = Controller.getProxy().GetHiddenUsers(
-                            Controller.getCurrentUser().Username,
-                            Controller.getCurrentUserPassword());
-
-                    for (int i = 0; i < userCategory.length; i++) {
-                        if (userCategory[i].equals(userSelected)) {
-                            Controller.temporaryInformation.put("User_type", "Hidden");
-                        }
-                    }
-
-                    userCategory = null;
-
-                    Controller.temporaryInformation.put("User_selected", userSelected);
-                    Controller.selectDynamicWindow(3);
-                }
-                else
-                {
-                    Controller.openConnectionLostPanel();
-                }
-                break;
-
-            case "otherPostAvaible":
+            case "otherPostAvailable":
                 if(Controller.getProxy().IsWebServiceRunning()) {
 
                     final WPost[] posts =
@@ -258,77 +197,73 @@ public class ActionIterationTimeline {
                     for (int i = 0; i < posts.length; i++) {
                         final int j = i;
 
-                        JPanel pnl = new JPanel(new HorizontalLayout(10));
-                        pnl.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
+                        JPanel pnl = new JPanel(new HorizontalLayout(3));
+                        //pnl.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
                         pnl.setBackground(Color.WHITE);
-                        JPanel pnl2 = new JPanel(new VerticalLayout(10));
+                        JPanel pnl2 = new JPanel(new VerticalLayout(2));
                         pnl2.setBackground(Color.WHITE);
 
                         //userPostComposite.setData("IdPost", posts[j].Id);
-                        GeneralLabel lblImgAvatar = new GeneralLabel();
-                        lblImgAvatar.setName("lblImgAvatar");
-
+                        LabelClicked lblImgAvatar = new LabelClicked();
+                        //lblImgAvatar.setName("lblUser");
 
                         if (Controller.getUsersAvatar().get(posts[j].getUser().Username) == null) {
                             Controller.getUsersAvatar().put(posts[j].getUser().Username, im.getUserImage(posts[j].getUser().Avatar));
                         }
-                        lblImgAvatar.setIcon(new ImageIcon(Controller.getUsersAvatar().get(posts[j].getUser().Username)));
+                        //lblImgAvatar.setIcon(new ImageIcon(Controller.getUsersAvatar().get(posts[j].getUser().Username)));
+                        try {
+                            lblImgAvatar.getLabel().setIcon(new ImageIcon(im.resize((BufferedImage) Controller.getUsersAvatar().get(posts[j].getUser().Username), 50, 50)));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                         if (!posts[j].getUser().Username.equals(Controller
                                 .getCurrentUser().Username)) {
                             lblImgAvatar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             lblImgAvatar.setToolTipText("View "
                                     + posts[j].getUser().Username + " Timeline");
+                            // Controller.temporaryInformation.put("User_selected", posts[j].getUser());
 
-                            lblImgAvatar.setwUser(posts[j].getUser());
+                            lblImgAvatar.getLabel().setwUser(posts[j].getUser());
+                            //lblImgAvatar.setUserType("");
                             lblImgAvatar.addMouseListener(listener);
 
                         }
                         pnl.add(lblImgAvatar);
 
-                        GeneralLabel lblUsername = new GeneralLabel();
-                        lblUsername.setName("lblUsername");
+                        LabelClicked lblUsername = new LabelClicked();
+                        //lblUsername.setName("lblUsername");
 
-                        lblUsername.setText(posts[j].getUser().Username);
+                        lblUsername.getLabel().setText(posts[j].getUser().Username);
                         if (!posts[j].getUser().Username.equals(Controller
                                 .getCurrentUser().Username)) {
                             lblUsername.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                             lblUsername.setToolTipText("View " + posts[j].getUser().Username + " Timeline");
-                            lblUsername.setFont(new Font("Calibri", Font.BOLD, 15));
+                            lblUsername.getLabel().setFont(new Font("Calibri", Font.BOLD, 15));
+                            lblUsername.getLabel().setForeground(Color.BLUE);
+                            //Controller.temporaryInformation.put("User_selected", posts[j].getUser());
 
-                            lblUsername.setwUser(posts[j].getUser());
+                            lblUsername.getLabel().setwUser(posts[j].getUser());
                             lblUsername.addMouseListener(listener);
                         } else {
-                            lblUsername.setFont(new Font("Calibri", Font.BOLD, 15));
-                            lblUsername.setForeground(Color.BLUE);
+                            lblUsername.getLabel().setFont(new Font("Calibri", Font.BOLD, 15));
+                            lblUsername.getLabel().setForeground(Color.BLACK);
                         }
 
                         pnl2.add(lblUsername);
 
-                        JTextPane message = new JTextPane();
-                        message.setContentType("text/html");
+
+                        JTextArea message = new JTextArea();
+                        message.setPreferredSize(new Dimension(160,60));
+                        message.setFont(new Font("Calibri", Font.ITALIC, 11));
+                        message.setLineWrap(true);
+                        message.setWrapStyleWord(true);
                         message.setEditable(false);
                         message.setBackground(Color.WHITE);
-                        message.setText(findLink(posts[j].getMessage()));
-                        message.addHyperlinkListener(new HyperlinkListener() {
-                            @Override
-                            public void hyperlinkUpdate(HyperlinkEvent e) {
-                                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                                    if (Desktop.isDesktopSupported()) {
-                                        try {
-                                            Desktop.getDesktop().browse(e.getURL().toURI());
-                                        } catch (IOException e1) {
-                                            // TODO Auto-generated catch block
-                                            e1.printStackTrace();
-                                        } catch (URISyntaxException e1) {
-                                            // TODO Auto-generated catch block
-                                            e1.printStackTrace();
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                        message.setText(posts[j].getMessage());
                         pnl2.add(message);
+
+
 
 
                         Calendar nowDate = Calendar.getInstance();
@@ -393,6 +328,8 @@ public class ActionIterationTimeline {
                         messageDate.setForeground(Color.LIGHT_GRAY);
                         pnl2.add(messageDate);
                         pnl.add(pnl2);
+                        // panel.add(pnl);
+
 
                         ((JPanel) uiData.get("panelDynamic")).remove(((JLabel) uiData.get("LabelOtherPost")));
 

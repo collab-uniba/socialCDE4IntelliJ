@@ -4,17 +4,18 @@
 
 package com.socialcdeIntellij.popup;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import javax.swing.*;
-import javax.swing.border.*;
-
 import com.socialcdeIntellij.action.ActionGeneral;
 import com.socialcdeIntellij.controller.Controller;
 import com.socialcdeIntellij.shared.library.WFeature;
 import com.socialcdeIntellij.shared.library.WService;
-import org.jdesktop.swingx.*;
+import org.jdesktop.swingx.HorizontalLayout;
+import org.jdesktop.swingx.VerticalLayout;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Davide Rossi
@@ -37,6 +38,7 @@ public class PopupServiceRegistered extends JDialog {
     public PopupServiceRegistered(Frame owner) {
         super(owner);
         initComponents();
+
     }
 
     public PopupServiceRegistered(Dialog owner) {
@@ -104,8 +106,10 @@ public class PopupServiceRegistered extends JDialog {
                     //======== panel3 ========
                     {
                         panel3.setLayout(new VerticalLayout(10));
-                        //panel3.g
 
+                        service = (WService) Controller.temporaryInformation.get("service");
+
+                        System.out.println("forse qui**************** "+service);
                         WFeature[] featuresService = Controller.getProxy().GetChosenFeatures(
                                 Controller.getCurrentUser().Username,
                                 Controller.getCurrentUserPassword(), service.Id);
@@ -118,6 +122,7 @@ public class PopupServiceRegistered extends JDialog {
                             featureService.setText(featuresService[i].Description);
                             setData("FeatureName", featuresService[i].Name);
                             featureService.setActionCommand(featuresService[i].Name);
+                            featureService.setName(featuresService[i].Name);
                             if (featuresService[i].IsChosen) {
                                 featureService.setSelected(true);
 
@@ -126,36 +131,6 @@ public class PopupServiceRegistered extends JDialog {
                             panel3.add(featureService);
 
                         }
-
-
-
-                        /*//---- ckboxAvatar ----
-                        ckboxAvatar.setText("Show your avatar");
-                        ckboxAvatar.setActionCommand("ckboxAvatar");
-                        panel3.add(ckboxAvatar, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                            new Insets(0, 0, 10, 0), 0, 0));
-
-                        //---- ckboxTimeline ----
-                        ckboxTimeline.setText("Show your timeline");
-                        ckboxTimeline.setActionCommand("ckboxTimeline");
-                        panel3.add(ckboxTimeline, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                            new Insets(0, 0, 10, 0), 0, 0));
-
-                        //---- ckboxFollowing ----
-                        ckboxFollowing.setText("Access your followings");
-                        ckboxFollowing.setActionCommand("ckboxFollowings");
-                        panel3.add(ckboxFollowing, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
-                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                            new Insets(0, 0, 10, 0), 0, 0));
-
-                        //---- ckboxFollowers ----
-                        ckboxFollowers.setText("Access your followers");
-                        ckboxFollowers.setActionCommand("ckboxFollowers");
-                        panel3.add(ckboxFollowers, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
-                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                            new Insets(0, 0, 0, 0), 0, 0));*/
                     }
                     panel2.add(panel3);
                 }
@@ -191,15 +166,8 @@ public class PopupServiceRegistered extends JDialog {
         pack();
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
-/*
-        listener = new ActionGeneral();
 
-        btnSave.addActionListener(listener);
-        btnUnsubscrive.addActionListener(listener);
-        ckboxAvatar.addActionListener(listener);
-        ckboxTimeline.addActionListener(listener);
-        ckboxFollowing.addActionListener(listener);
-        ckboxFollowers.addActionListener(listener);*/
+
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
@@ -249,6 +217,8 @@ public class PopupServiceRegistered extends JDialog {
     public void setServiceName(String name){
         lblServiceName.setText(name);
     }
+
+
 
     public HashMap<String, Object> getData() {
 
