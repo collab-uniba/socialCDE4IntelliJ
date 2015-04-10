@@ -43,8 +43,11 @@ public class ActionHome {
                 break;
 
             case "lblSkills":
+
                 PopupSkill popupSkill = new PopupSkill(Controller.getFrame());
                 popupSkill.setVisible(true);
+
+
                 break;
 
             case "lblSettings":
@@ -519,7 +522,7 @@ public class ActionHome {
                                                     .getText(),
                                             ((JTextField) tfsData.get("textPassword"))
                                                     .getText(),
-                                            tfsData.get("textDomain").toString())) {
+                                            Controller.getProxy().getHost())) {
                                         tfsPanel.dispose();
                                         Controller.selectDynamicWindow(0);
                                         Controller.getWindow().revalidate();
